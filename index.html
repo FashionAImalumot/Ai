@@ -65,12 +65,12 @@
     <!-- Navbar -->
     <nav class="w-full bg-white border-b border-fashion-light sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-            <!-- BRAND NAME UPDATED HERE -->
+            <!-- BRAND NAME -->
             <div class="font-serif text-2xl font-bold text-fashion-dark tracking-tight">Fashion<span class="text-fashion-gold text-lg font-sans font-normal">avenue</span></div>
             
             <!-- Desktop Menu -->
             <div class="hidden md:flex items-center space-x-6 text-sm font-medium text-gray-500">
-                <a href="#ai-tools" class="text-fashion-gold font-bold hover:text-fashion-dark transition">AI Tools ✨</a>
+                <a href="#ai-tools" class="text-fashion-gold font-bold hover:text-fashion-dark transition" data-key="nav_ai_tools">AI Vositalar ✨</a>
                 <a href="#overview" class="hover:text-fashion-gold transition" data-key="nav_overview">Umumiy Ko'rinish</a>
                 <a href="#syllabus" class="hover:text-fashion-gold transition" data-key="nav_syllabus">Kurs Dasturi</a>
                 <a href="#schedule" class="hover:text-fashion-gold transition" data-key="nav_schedule">Reja</a>
@@ -92,7 +92,7 @@
         
         <!-- Mobile Dropdown -->
         <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-gray-100 p-4 space-y-3 shadow-lg absolute w-full z-40">
-            <a href="#ai-tools" class="block text-fashion-gold font-bold py-2">AI Tools ✨</a>
+            <a href="#ai-tools" class="block text-fashion-gold font-bold py-2" data-key="nav_ai_tools">AI Vositalar ✨</a>
             <a href="#overview" class="block text-gray-600 py-2 hover:text-fashion-gold" data-key="nav_overview">Umumiy Ko'rinish</a>
             <a href="#syllabus" class="block text-gray-600 py-2 hover:text-fashion-gold" data-key="nav_syllabus">Kurs Dasturi</a>
             <a href="#schedule" class="block text-gray-600 py-2 hover:text-fashion-gold" data-key="nav_schedule">Reja</a>
@@ -133,32 +133,8 @@
             </div>
         </header>
 
-        <!-- AI Tools Section -->
-        <section id="ai-tools" class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!-- Prompter -->
-            <div class="bg-white p-8 rounded-2xl shadow-lg border border-fashion-gold/20 relative overflow-hidden">
-                <h3 class="font-serif text-2xl text-fashion-dark mb-2 flex items-center">Nano Banana Prompter ✨</h3>
-                <p class="text-sm text-gray-500 mb-1" data-key="ai_prompter_desc">G'oyangizni yozing, AI uni professional promptga aylantiradi.</p>
-                <p class="text-xs text-fashion-gold font-medium mb-6 italic" data-key="ai_prompter_note">* Faqat inglizcha prompt chiqaradi</p>
-                
-                <div class="space-y-4">
-                    <div>
-                        <label class="text-xs font-bold uppercase text-gray-400" data-key="your_idea">Sizning G'oyangiz</label>
-                        <input type="text" id="promptInput" class="w-full mt-1 p-3 border border-gray-200 rounded-lg focus:outline-none focus:border-fashion-gold bg-fashion-bg">
-                    </div>
-                    <button onclick="generateFashionPrompt()" id="btnGenerate" class="w-full bg-fashion-dark text-white py-3 rounded-lg hover:bg-fashion-gold transition duration-300 flex justify-center items-center gap-2">
-                        <span data-key="btn_generate">Prompt Yaratish</span> ✨
-                    </button>
-                    <div id="promptResultContainer" class="hidden mt-4">
-                        <label class="text-xs font-bold uppercase text-gray-400" data-key="result_label">Natija (Nusxa olish uchun bosing)</label>
-                        <div onclick="copyToClipboard('promptOutput')" class="mt-1 p-4 bg-gray-50 rounded-lg border border-dashed border-gray-300 cursor-pointer hover:bg-white transition relative group/copy">
-                            <p id="promptOutput" class="text-sm font-mono italic text-gray-700"></p>
-                        </div>
-                    </div>
-                    <div id="promptLoading" class="hidden py-4 flex justify-center"><div class="dot-flashing"></div></div>
-                </div>
-            </div>
-
+        <!-- AI Tools Section (ONLY ADVISOR) -->
+        <section id="ai-tools" class="max-w-3xl mx-auto">
             <!-- Advisor -->
             <div class="bg-white p-8 rounded-2xl shadow-lg border border-fashion-gold/20 relative overflow-hidden">
                 <h3 class="font-serif text-2xl text-fashion-dark mb-2 flex items-center" data-key="ai_advisor_title">AI Kurs Maslahatchisi ✨</h3>
@@ -174,7 +150,7 @@
                     </button>
                     <div id="qaResultContainer" class="hidden mt-4">
                         <div class="p-4 bg-fashion-bg rounded-lg border-l-4 border-fashion-gold">
-                            <p id="qaOutput" class="text-sm text-gray-800"></p>
+                            <p id="qaOutput" class="text-sm text-gray-800 whitespace-pre-line"></p>
                         </div>
                     </div>
                     <div id="qaLoading" class="hidden py-4 flex justify-center"><div class="dot-flashing"></div></div>
@@ -232,7 +208,7 @@
 
         <!-- Footer -->
         <footer class="bg-white border-t border-fashion-light py-8 text-center text-sm text-gray-500">
-            <p>&copy; 2024 Fashionavenue. Barcha huquqlar himoyalangan.</p>
+            <p>&copy; 2025 Fashionavenue. Barcha huquqlar himoyalangan.</p>
         </footer>
 
     </main>
@@ -241,23 +217,31 @@
         // --- TRANSLATIONS (Uzbek & Russian) ---
         const translations = {
             uz: {
+                // Nav
+                nav_ai_tools: "AI Vositalar ✨",
                 nav_overview: "Umumiy Ko'rinish", nav_syllabus: "Kurs Dasturi", nav_schedule: "Reja",
+                
+                // Hero
                 hero_badge: "8 Darslik Intensiv", hero_title_1: "Moda va AI:", hero_title_2: "G'oyadan Reallikka",
                 hero_desc: "Noldan boshlab professionalgacha. <strong>Nano Banana</strong> yordamida moda rasmlari va <strong>Google Flow</strong> orqali yuqori sifatli video kampaniyalar yaratishni o'rganing.",
                 stat_duration_val: "4 Hafta", stat_duration_label: "Davomiyligi",
                 stat_hours_val: "12 Soat", stat_hours_label: "Umumiy vaqt",
                 tools_label: "Asbob", stat_practice_label: "Amaliyot",
-                ai_prompter_desc: "Oddiy moda g'oyangizni yozing, sun'iy intellekt uni professional inglizcha promptga aylantirib beradi.",
-                ai_prompter_note: "* Faqat inglizcha prompt chiqaradi",
-                your_idea: "Sizning G'oyangiz", btn_generate: "Prompt Yaratish", result_label: "Natija",
+                
+                // AI Tools
                 ai_advisor_title: "AI Kurs Maslahatchisi ✨", ai_advisor_desc: "Kurs bo'yicha savol bering. Masalan: 'Video montaj qachon?'",
                 your_question: "Savolingiz", btn_ask: "So'rash",
                 
+                // Balance
                 balance_title: "Kurs Balansi", 
                 balance_desc: "Nazariya va amaliyot taqsimoti.",
                 
                 chart_topics_title: "Mavzular Taqsimoti", chart_structure_title: "Dars Tuzilishi (Daqiqalarda)", chart_note: "* Har bir dars 90 daqiqa",
+                
+                // Syllabus
                 list_title: "Darslar Ro'yxati", list_subtitle: "Batafsil ko'rish uchun tanlang.",
+                
+                // Plan
                 plan_title: "4 Haftalik Reja", plan_subtitle: "Haftasiga 2 marta, barqaror o'sish.",
                 
                 lesson_label: "Dars",
@@ -269,23 +253,31 @@
                 chart_labels_structure: ['Nazariya', 'Amaliyot', 'Tahlil']
             },
             ru: {
+                // Nav
+                nav_ai_tools: "AI Инструменты ✨",
                 nav_overview: "Обзор", nav_syllabus: "Программа", nav_schedule: "План",
+                
+                // Hero
                 hero_badge: "Интенсив 8 уроков", hero_title_1: "Мода и ИИ:", hero_title_2: "От Идеи к Реальности",
                 hero_desc: "С нуля до профи. Создавайте модные образы с <strong>Nano Banana</strong> и видеокампании с <strong>Google Flow</strong>.",
                 stat_duration_val: "4 Недели", stat_duration_label: "Длительность",
                 stat_hours_val: "12 Часов", stat_hours_label: "Общее время",
                 tools_label: "Инструмента", stat_practice_label: "Практика",
-                ai_prompter_desc: "Напишите вашу идею, ИИ превратит её в профессиональный промпт на английском.",
-                ai_prompter_note: "* Генерирует промпты только на английском",
-                your_idea: "Ваша Идея", btn_generate: "Создать Промпт", result_label: "Результат",
+                
+                // AI Tools
                 ai_advisor_title: "AI Консультант Курса ✨", ai_advisor_desc: "Задайте вопрос по курсу. Например: 'Когда монтаж видео?'",
                 your_question: "Ваш вопрос", btn_ask: "Спросить",
                 
+                // Balance
                 balance_title: "Баланс Курса", 
                 balance_desc: "Распределение теории и практики.",
 
                 chart_topics_title: "Распределение Тем", chart_structure_title: "Структура Урока (Минуты)", chart_note: "* Каждый урок 90 минут",
+                
+                // Syllabus
                 list_title: "Список Уроков", list_subtitle: "Выберите урок для деталей.",
+                
+                // Plan
                 plan_title: "План на 4 Недели", plan_subtitle: "2 раза в неделю, стабильный рост.",
 
                 lesson_label: "Урок",
@@ -381,7 +373,7 @@
                 plan: [
                     { time: "20m", type_uz: "Nazariya", type_ru: "Теория", desc_uz: "Fizika qonunlari.", desc_ru: "Законы физики." },
                     { time: "60m", type_uz: "Amaliyot", type_ru: "Практика", desc_uz: "Catwalk video.", desc_ru: "Видео дефиле." },
-                    { time: "10m", type_uz: "Tahlil", type_ru: "Разбор", desc_uz: "Артефакты.", desc_ru: "Артефакты." }
+                    { time: "10m", type_uz: "Tahlil", type_ru: "Разбор", desc_uz: "Artefaktlar.", desc_ru: "Артефакты." }
                 ]
             },
             {
@@ -629,23 +621,6 @@
             } catch (error) { return currentLang === 'uz' ? "Xatolik yuz berdi." : "Произошла ошибка."; }
         }
 
-        async function generateFashionPrompt() {
-            const input = document.getElementById('promptInput').value;
-            if (!input.trim()) return;
-            
-            document.getElementById('btnGenerate').disabled = true;
-            document.getElementById('promptLoading').classList.remove('hidden');
-            document.getElementById('promptResultContainer').classList.add('hidden');
-
-            const sys = "You are an expert AI Fashion prompter. Take the concept and create a HIGHLY DETAILED English prompt including lighting, texture, and style. Output ONLY the English prompt.";
-            const res = await callGemini(input, sys);
-
-            document.getElementById('promptLoading').classList.add('hidden');
-            document.getElementById('promptResultContainer').classList.remove('hidden');
-            document.getElementById('promptOutput').textContent = res;
-            document.getElementById('btnGenerate').disabled = false;
-        }
-
         async function askCourseAdvisor() {
             const input = document.getElementById('qaInput').value;
             if (!input.trim()) return;
@@ -655,8 +630,14 @@
             document.getElementById('qaResultContainer').classList.add('hidden');
 
             const context = JSON.stringify(lessonsData);
-            const sys = `You are the instructor of 'Fashionavenue'. Answer in ${currentLang === 'uz' ? 'UZBEK' : 'RUSSIAN'} based on: ${context}. Keep it helpful.`;
-            const res = await callGemini(input, sys);
+            const sys = `You are the instructor of 'Fashionavenue'. Answer in ${currentLang === 'uz' ? 'UZBEK' : 'RUSSIAN'} based on: ${context}. Keep it helpful. IMPORTANT: Output plain text only. Do NOT use markdown symbols like ** or ##.`;
+            
+            let res = await callGemini(input, sys);
+            
+            // Post-processing cleanup just in case
+            if (res) {
+                 res = res.replace(/\*\*/g, '').replace(/##/g, '').replace(/###/g, '');
+            }
 
             document.getElementById('qaLoading').classList.add('hidden');
             document.getElementById('qaResultContainer').classList.remove('hidden');
