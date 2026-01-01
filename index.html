@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Fashion: Kurs Rejasi</title>
+    <title>Fashionavenue: Kurs Rejasi</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -65,7 +65,8 @@
     <!-- Navbar -->
     <nav class="w-full bg-white border-b border-fashion-light sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="font-serif text-2xl font-bold text-fashion-dark tracking-tight">AI Fashion <span class="text-fashion-gold text-lg font-sans font-normal">Academy</span></div>
+            <!-- BRAND NAME UPDATED HERE -->
+            <div class="font-serif text-2xl font-bold text-fashion-dark tracking-tight">Fashion<span class="text-fashion-gold text-lg font-sans font-normal">avenue</span></div>
             
             <!-- Desktop Menu -->
             <div class="hidden md:flex items-center space-x-6 text-sm font-medium text-gray-500">
@@ -229,6 +230,11 @@
             </div>
         </section>
 
+        <!-- Footer -->
+        <footer class="bg-white border-t border-fashion-light py-8 text-center text-sm text-gray-500">
+            <p>&copy; 2024 Fashionavenue. Barcha huquqlar himoyalangan.</p>
+        </footer>
+
     </main>
 
     <script>
@@ -375,7 +381,7 @@
                 plan: [
                     { time: "20m", type_uz: "Nazariya", type_ru: "Теория", desc_uz: "Fizika qonunlari.", desc_ru: "Законы физики." },
                     { time: "60m", type_uz: "Amaliyot", type_ru: "Практика", desc_uz: "Catwalk video.", desc_ru: "Видео дефиле." },
-                    { time: "10m", type_uz: "Tahlil", type_ru: "Разбор", desc_uz: "Artefaktlar.", desc_ru: "Артефакты." }
+                    { time: "10m", type_uz: "Tahlil", type_ru: "Разбор", desc_uz: "Артефакты.", desc_ru: "Артефакты." }
                 ]
             },
             {
@@ -649,7 +655,7 @@
             document.getElementById('qaResultContainer').classList.add('hidden');
 
             const context = JSON.stringify(lessonsData);
-            const sys = `You are the instructor of 'AI Fashion Academy'. Answer in ${currentLang === 'uz' ? 'UZBEK' : 'RUSSIAN'} based on: ${context}. Keep it helpful.`;
+            const sys = `You are the instructor of 'Fashionavenue'. Answer in ${currentLang === 'uz' ? 'UZBEK' : 'RUSSIAN'} based on: ${context}. Keep it helpful.`;
             const res = await callGemini(input, sys);
 
             document.getElementById('qaLoading').classList.add('hidden');
