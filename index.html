@@ -43,21 +43,6 @@
         .chart-container { position: relative; width: 100%; height: 300px; }
         @media (min-width: 768px) { .chart-container { height: 350px; } }
         .lesson-active { border-left: 4px solid #A68A64; background-color: white; font-weight: 600; }
-        
-        /* Loading animation */
-        .dot-flashing {
-            position: relative;
-            width: 10px; height: 10px; border-radius: 5px;
-            background-color: #A68A64; animation: dot-flashing 1s infinite linear alternate;
-            animation-delay: 0.5s;
-        }
-        .dot-flashing::before, .dot-flashing::after {
-            content: ""; position: absolute; top: 0; width: 10px; height: 10px; border-radius: 5px; background-color: #A68A64;
-            animation: dot-flashing 1s infinite alternate;
-        }
-        .dot-flashing::before { left: -15px; animation-delay: 0s; }
-        .dot-flashing::after { left: 15px; animation-delay: 1s; }
-        @keyframes dot-flashing { 0% { background-color: #A68A64; } 50%, 100% { background-color: #E7E5E4; } }
     </style>
 </head>
 <body class="font-sans antialiased selection:bg-fashion-gold selection:text-white pb-20">
@@ -70,7 +55,6 @@
             
             <!-- Desktop Menu -->
             <div class="hidden md:flex items-center space-x-6 text-sm font-medium text-gray-500">
-                <a href="#ai-tools" class="text-fashion-gold font-bold hover:text-fashion-dark transition" data-key="nav_ai_tools">AI Vositalar ✨</a>
                 <a href="#overview" class="hover:text-fashion-gold transition" data-key="nav_overview">Umumiy Ko'rinish</a>
                 <a href="#syllabus" class="hover:text-fashion-gold transition" data-key="nav_syllabus">Kurs Dasturi</a>
                 <a href="#schedule" class="hover:text-fashion-gold transition" data-key="nav_schedule">Reja</a>
@@ -92,7 +76,6 @@
         
         <!-- Mobile Dropdown -->
         <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-gray-100 p-4 space-y-3 shadow-lg absolute w-full z-40">
-            <a href="#ai-tools" class="block text-fashion-gold font-bold py-2" data-key="nav_ai_tools">AI Vositalar ✨</a>
             <a href="#overview" class="block text-gray-600 py-2 hover:text-fashion-gold" data-key="nav_overview">Umumiy Ko'rinish</a>
             <a href="#syllabus" class="block text-gray-600 py-2 hover:text-fashion-gold" data-key="nav_syllabus">Kurs Dasturi</a>
             <a href="#schedule" class="block text-gray-600 py-2 hover:text-fashion-gold" data-key="nav_schedule">Reja</a>
@@ -132,31 +115,6 @@
                 </div>
             </div>
         </header>
-
-        <!-- AI Tools Section (ONLY ADVISOR) -->
-        <section id="ai-tools" class="max-w-3xl mx-auto">
-            <!-- Advisor -->
-            <div class="bg-white p-8 rounded-2xl shadow-lg border border-fashion-gold/20 relative overflow-hidden">
-                <h3 class="font-serif text-2xl text-fashion-dark mb-2 flex items-center" data-key="ai_advisor_title">AI Kurs Maslahatchisi ✨</h3>
-                <p class="text-sm text-gray-500 mb-6" data-key="ai_advisor_desc">Kurs bo'yicha savol bering. Masalan: "Video montaj qachon?"</p>
-                
-                <div class="space-y-4">
-                    <div>
-                        <label class="text-xs font-bold uppercase text-gray-400" data-key="your_question">Savolingiz</label>
-                        <input type="text" id="qaInput" class="w-full mt-1 p-3 border border-gray-200 rounded-lg focus:outline-none focus:border-fashion-gold bg-fashion-bg">
-                    </div>
-                    <button onclick="askCourseAdvisor()" id="btnAsk" class="w-full bg-white border border-fashion-dark text-fashion-dark py-3 rounded-lg hover:bg-fashion-dark hover:text-white transition duration-300 flex justify-center items-center gap-2">
-                        <span data-key="btn_ask">So'rash</span> ✨
-                    </button>
-                    <div id="qaResultContainer" class="hidden mt-4">
-                        <div class="p-4 bg-fashion-bg rounded-lg border-l-4 border-fashion-gold">
-                            <p id="qaOutput" class="text-sm text-gray-800 whitespace-pre-line"></p>
-                        </div>
-                    </div>
-                    <div id="qaLoading" class="hidden py-4 flex justify-center"><div class="dot-flashing"></div></div>
-                </div>
-            </div>
-        </section>
 
         <!-- Overview -->
         <section id="overview" class="bg-white p-8 rounded-2xl shadow-sm border border-fashion-light">
@@ -208,7 +166,7 @@
 
         <!-- Footer -->
         <footer class="bg-white border-t border-fashion-light py-8 text-center text-sm text-gray-500">
-            <p>&copy; 2025 Fashionavenue. Barcha huquqlar himoyalangan.</p>
+            <p>&copy; 2024 Fashionavenue. Barcha huquqlar himoyalangan.</p>
         </footer>
 
     </main>
@@ -218,7 +176,6 @@
         const translations = {
             uz: {
                 // Nav
-                nav_ai_tools: "AI Vositalar ✨",
                 nav_overview: "Umumiy Ko'rinish", nav_syllabus: "Kurs Dasturi", nav_schedule: "Reja",
                 
                 // Hero
@@ -227,10 +184,6 @@
                 stat_duration_val: "4 Hafta", stat_duration_label: "Davomiyligi",
                 stat_hours_val: "12 Soat", stat_hours_label: "Umumiy vaqt",
                 tools_label: "Asbob", stat_practice_label: "Amaliyot",
-                
-                // AI Tools
-                ai_advisor_title: "AI Kurs Maslahatchisi ✨", ai_advisor_desc: "Kurs bo'yicha savol bering. Masalan: 'Video montaj qachon?'",
-                your_question: "Savolingiz", btn_ask: "So'rash",
                 
                 // Balance
                 balance_title: "Kurs Balansi", 
@@ -254,7 +207,6 @@
             },
             ru: {
                 // Nav
-                nav_ai_tools: "AI Инструменты ✨",
                 nav_overview: "Обзор", nav_syllabus: "Программа", nav_schedule: "План",
                 
                 // Hero
@@ -263,10 +215,6 @@
                 stat_duration_val: "4 Недели", stat_duration_label: "Длительность",
                 stat_hours_val: "12 Часов", stat_hours_label: "Общее время",
                 tools_label: "Инструмента", stat_practice_label: "Практика",
-                
-                // AI Tools
-                ai_advisor_title: "AI Консультант Курса ✨", ai_advisor_desc: "Задайте вопрос по курсу. Например: 'Когда монтаж видео?'",
-                your_question: "Ваш вопрос", btn_ask: "Спросить",
                 
                 // Balance
                 balance_title: "Баланс Курса", 
@@ -415,12 +363,11 @@
         let currentLang = 'uz';
         let currentLessonId = 1;
         let contentChart, structureChart;
-        const apiKey = ""; 
 
         // --- INIT ---
         document.addEventListener('DOMContentLoaded', () => {
-            initCharts(); // FIXED: Init charts first
-            updateLanguageUI(); // THEN update text and chart labels
+            initCharts(); 
+            updateLanguageUI();
             renderWeeklyPlan();
         });
 
@@ -593,61 +540,6 @@
             structureChart.data.datasets[1].label = t.chart_labels_structure[1];
             structureChart.data.datasets[2].label = t.chart_labels_structure[2];
             structureChart.update();
-        }
-
-        // --- GEMINI API ---
-        async function callGemini(userPrompt, systemInstruction) {
-            try {
-                let retries = 0;
-                while (retries <= 3) {
-                    try {
-                        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
-                            method: 'POST',
-                            headers: {'Content-Type': 'application/json'},
-                            body: JSON.stringify({
-                                contents: [{parts: [{ text: userPrompt }]}],
-                                systemInstruction: {parts: [{ text: systemInstruction }]}
-                            })
-                        });
-                        if (!response.ok) throw new Error('API Error');
-                        const data = await response.json();
-                        return data.candidates[0].content.parts[0].text;
-                    } catch (error) {
-                        retries++;
-                        if (retries > 3) throw error;
-                        await new Promise(r => setTimeout(r, 1000 * retries));
-                    }
-                }
-            } catch (error) { return currentLang === 'uz' ? "Xatolik yuz berdi." : "Произошла ошибка."; }
-        }
-
-        async function askCourseAdvisor() {
-            const input = document.getElementById('qaInput').value;
-            if (!input.trim()) return;
-
-            document.getElementById('btnAsk').disabled = true;
-            document.getElementById('qaLoading').classList.remove('hidden');
-            document.getElementById('qaResultContainer').classList.add('hidden');
-
-            const context = JSON.stringify(lessonsData);
-            const sys = `You are the instructor of 'Fashionavenue'. Answer in ${currentLang === 'uz' ? 'UZBEK' : 'RUSSIAN'} based on: ${context}. Keep it helpful. IMPORTANT: Output plain text only. Do NOT use markdown symbols like ** or ##.`;
-            
-            let res = await callGemini(input, sys);
-            
-            // Post-processing cleanup just in case
-            if (res) {
-                 res = res.replace(/\*\*/g, '').replace(/##/g, '').replace(/###/g, '');
-            }
-
-            document.getElementById('qaLoading').classList.add('hidden');
-            document.getElementById('qaResultContainer').classList.remove('hidden');
-            document.getElementById('qaOutput').textContent = res;
-            document.getElementById('btnAsk').disabled = false;
-        }
-
-        function copyToClipboard(elementId) {
-            const text = document.getElementById(elementId).innerText;
-            navigator.clipboard.writeText(text);
         }
     </script>
 </body>
