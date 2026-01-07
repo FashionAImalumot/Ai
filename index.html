@@ -1,547 +1,624 @@
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="uz" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fashionavenue: Kurs Rejasi</title>
-    
+    <title>AiFashion | FashionAvenue Academy 2026</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-
-    <!-- Config -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
+                    fontFamily: {
+                        sans: ['Manrope', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        display: ['Cormorant Garamond', 'serif'],
+                    },
                     colors: {
+                        main: '#07030D',
+                        secondary: '#150A24',
+                        deep: '#241337',
+                        accent: {
+                            purple: '#C8A8FF',
+                            blue: '#8FB4FF',
+                        },
                         fashion: {
-                            bg: '#F9F8F6',
-                            text: '#2D2A26',
-                            gold: '#A68A64',
-                            dark: '#1C1917',
-                            light: '#E7E5E4',
-                            accent: '#92400E'
+                            text: 'rgba(235,230,255,0.82)',
+                            muted: 'rgba(200,190,240,0.7)',
+                            border: 'rgba(210,190,255,0.35)',
+                            card: 'rgba(21, 10, 36, 0.6)'
                         }
                     },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
+                    letterSpacing: {
+                        'fashion-wide': '0.15em',
+                        'fashion-label': '0.1em',
+                    },
+                    borderRadius: {
+                        'fashion': '24px',
+                    },
+                    backgroundImage: {
+                        'gradient-fashion': 'linear-gradient(135deg, #07030D 0%, #150A24 100%)',
+                        'gradient-card': 'linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%)',
+                        'gradient-text': 'linear-gradient(90deg, #C8A8FF 0%, #8FB4FF 100%)',
                     }
                 }
             }
         }
     </script>
-
     <style>
-        body { background-color: #F9F8F6; color: #2D2A26; }
-        .chart-container { position: relative; width: 100%; height: 300px; }
-        @media (min-width: 768px) { .chart-container { height: 350px; } }
-        .lesson-active { border-left: 4px solid #A68A64; background-color: white; font-weight: 600; }
+        body {
+            background-color: #07030D;
+            background-image: linear-gradient(135deg, #07030D 0%, #150A24 100%);
+            color: rgba(235,230,255,0.82);
+            min-height: 100vh;
+        }
+        
+        /* Smooth Text Gradient */
+        .text-gradient {
+            background: linear-gradient(90deg, #C8A8FF 0%, #8FB4FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Glassmorphism Utilities */
+        .glass-panel {
+            background: rgba(21, 10, 36, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(210,190,255,0.15);
+        }
+
+        .glass-card {
+            background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(210,190,255,0.2);
+            transition: all 0.4s ease;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(200, 168, 255, 0.5);
+            background: rgba(255,255,255,0.05);
+            transform: translateY(-2px);
+        }
+
+        /* Ambient Glows */
+        .ambient-glow {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(200, 168, 255, 0.08) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+            filter: blur(60px);
+        }
+
+        .details-marker {
+            list-style: none;
+        }
+        .details-marker::-webkit-details-marker {
+            display: none;
+        }
     </style>
 </head>
-<body class="font-sans antialiased selection:bg-fashion-gold selection:text-white pb-20">
+<body class="antialiased selection:bg-accent-purple selection:text-black font-sans">
 
-    <!-- Navbar -->
-    <nav class="w-full bg-white border-b border-fashion-light sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-            <!-- BRAND NAME -->
-            <div class="font-serif text-2xl font-bold text-fashion-dark tracking-tight">Fashion<span class="text-fashion-gold text-lg font-sans font-normal">avenue</span></div>
-            
-            <!-- Desktop Menu -->
-            <div class="hidden md:flex items-center space-x-6 text-sm font-medium text-gray-500">
-                <a href="#overview" class="hover:text-fashion-gold transition" data-key="nav_overview">Umumiy Ko'rinish</a>
-                <a href="#syllabus" class="hover:text-fashion-gold transition" data-key="nav_syllabus">Kurs Dasturi</a>
-                <a href="#schedule" class="hover:text-fashion-gold transition" data-key="nav_schedule">Reja</a>
+    <!-- Ambient Background Elements -->
+    <div class="ambient-glow top-0 left-0 opacity-50"></div>
+    <div class="ambient-glow bottom-0 right-0 opacity-30"></div>
+
+    <!-- 1) HEADER/NAVBAR -->
+    <nav class="fixed w-full z-50 bg-main/80 backdrop-blur-md border-b border-fashion-border/30 transition-all duration-300">
+        <div class="max-w-[1140px] mx-auto px-6">
+            <div class="flex items-center justify-between h-24">
                 
-                <!-- Language Switcher -->
-                <button onclick="toggleLanguage()" class="ml-4 px-3 py-1 border border-gray-300 rounded text-xs font-bold hover:bg-fashion-dark hover:text-white transition uppercase" id="langBtn">
-                    RU
-                </button>
-            </div>
+                <!-- Left: Brand Block -->
+                <div class="flex flex-col justify-center cursor-pointer group">
+                    <span class="text-2xl font-serif font-medium tracking-wide text-[#F7F3FF] group-hover:text-accent-purple transition-colors">AiFashion</span>
+                    <span class="text-[10px] tracking-fashion-wide text-fashion-muted font-semibold uppercase mt-0.5 group-hover:text-white transition-colors">by FashionAvenue</span>
+                </div>
+                
+                <!-- Center: Navigation Links (Desktop) -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="text-[11px] uppercase tracking-fashion-label text-fashion-muted hover:text-white transition-colors py-2" data-key="nav_home">Bosh sahifa</a>
+                    <a href="#about" class="text-[11px] uppercase tracking-fashion-label text-fashion-muted hover:text-white transition-colors py-2" data-key="nav_about">Kurs haqida</a>
+                    <a href="#curriculum" class="text-[11px] uppercase tracking-fashion-label text-fashion-muted hover:text-white transition-colors py-2" data-key="nav_curriculum">Dastur</a>
+                    <a href="#pricing" class="text-[11px] uppercase tracking-fashion-label text-fashion-muted hover:text-white transition-colors py-2" data-key="nav_pricing">Narxlar</a>
+                    <a href="#faq" class="text-[11px] uppercase tracking-fashion-label text-fashion-muted hover:text-white transition-colors py-2" data-key="nav_faq">FAQ</a>
+                </div>
 
-            <!-- Mobile Menu Button -->
-            <div class="md:hidden flex items-center gap-3">
-                <button onclick="toggleLanguage()" class="px-2 py-1 border border-gray-300 rounded text-xs font-bold uppercase" id="langBtnMobile">RU</button>
-                <button onclick="document.getElementById('mobileMenu').classList.toggle('hidden')" class="text-fashion-dark focus:outline-none p-2 rounded hover:bg-gray-100">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                </button>
+                <!-- Right: Language & Mobile Toggle -->
+                <div class="flex items-center gap-4">
+                    <!-- Language Toggle Pill -->
+                    <div class="flex items-center border border-fashion-border rounded-full p-1 bg-white/5">
+                        <button onclick="setLanguage('uz')" id="btn-uz" class="text-[10px] font-bold px-4 py-1.5 rounded-full transition-all tracking-wider">UZ</button>
+                        <button onclick="setLanguage('ru')" id="btn-ru" class="text-[10px] font-bold px-4 py-1.5 rounded-full text-fashion-muted hover:text-white transition-all tracking-wider">RU</button>
+                    </div>
+
+                    <!-- Mobile Menu Button -->
+                    <button type="button" onclick="toggleMobileMenu()" class="md:hidden p-2 text-fashion-muted hover:text-white">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
             </div>
         </div>
-        
-        <!-- Mobile Dropdown -->
-        <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-gray-100 p-4 space-y-3 shadow-lg absolute w-full z-40">
-            <a href="#overview" class="block text-gray-600 py-2 hover:text-fashion-gold" data-key="nav_overview">Umumiy Ko'rinish</a>
-            <a href="#syllabus" class="block text-gray-600 py-2 hover:text-fashion-gold" data-key="nav_syllabus">Kurs Dasturi</a>
-            <a href="#schedule" class="block text-gray-600 py-2 hover:text-fashion-gold" data-key="nav_schedule">Reja</a>
+
+        <!-- Mobile Menu Overlay -->
+        <div class="md:hidden hidden bg-secondary/95 backdrop-blur-xl border-b border-fashion-border absolute w-full" id="mobile-menu">
+            <div class="px-6 py-6 space-y-4 flex flex-col items-center">
+                <a href="#home" onclick="toggleMobileMenu()" class="text-sm uppercase tracking-widest text-fashion-muted hover:text-white" data-key="nav_home">Bosh sahifa</a>
+                <a href="#about" onclick="toggleMobileMenu()" class="text-sm uppercase tracking-widest text-fashion-muted hover:text-white" data-key="nav_about">Kurs haqida</a>
+                <a href="#curriculum" onclick="toggleMobileMenu()" class="text-sm uppercase tracking-widest text-fashion-muted hover:text-white" data-key="nav_curriculum">Dastur</a>
+                <a href="#pricing" onclick="toggleMobileMenu()" class="text-sm uppercase tracking-widest text-fashion-muted hover:text-white" data-key="nav_pricing">Narxlar</a>
+                <a href="#faq" onclick="toggleMobileMenu()" class="text-sm uppercase tracking-widest text-fashion-muted hover:text-white" data-key="nav_faq">FAQ</a>
+            </div>
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <main class="max-w-6xl mx-auto px-4 py-8 space-y-16">
+    <!-- 2) HERO SECTION -->
+    <section id="home" class="relative min-h-screen flex items-center pt-32 pb-20 lg:pt-0 overflow-hidden">
+        <!-- Glow behind -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent-purple/5 blur-[120px] rounded-full pointer-events-none"></div>
 
-        <!-- Header -->
-        <header class="text-center py-16 md:py-24 max-w-4xl mx-auto flex flex-col items-center justify-center min-h-[50vh]">
-            <span class="inline-block px-4 py-1.5 mb-6 text-xs font-semibold tracking-widest text-fashion-gold uppercase border border-fashion-gold rounded-full bg-white" data-key="hero_badge">8 Darslik Intensiv</span>
-            <h1 class="font-serif text-5xl md:text-7xl font-bold text-fashion-dark mb-8 leading-tight">
-                <span data-key="hero_title_1">Moda va AI:</span> <br/> 
-                <span class="text-fashion-gold" data-key="hero_title_2">G'oyadan Reallikka</span>
-            </h1>
-            <p class="text-lg md:text-xl text-gray-600 mb-10 leading-relaxed max-w-2xl mx-auto" data-key="hero_desc">
-                Noldan boshlab professionalgacha. <strong>Nano Banana</strong> yordamida moda rasmlari va <strong>Google Flow</strong> orqali yuqori sifatli video kampaniyalar yaratishni o'rganing.
-            </p>
+        <div class="max-w-[1140px] mx-auto px-6 w-full relative z-10">
+            <!-- Centered Layout since image is removed -->
+            <div class="flex flex-col items-center text-center max-w-4xl mx-auto">
+                
+                <!-- Pill Badge -->
+                <div class="mb-10 inline-flex items-center justify-center px-5 py-2 rounded-full border border-fashion-border bg-accent-purple/10">
+                    <span class="text-[10px] font-semibold tracking-widest uppercase text-accent-purple" data-key="hero_badge">2026-yilgi Ai in fashion kursi haqida ma'lumot</span>
+                </div>
+
+                <!-- H1 Title -->
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-serif font-medium leading-[1.1] mb-8 tracking-tight text-[#F7F3FF]">
+                    AiFashion <br>
+                    <span class="text-gradient italic pr-2">Academy</span>
+                </h1>
+
+                <!-- Paragraph -->
+                <p class="text-lg md:text-xl text-fashion-text font-light leading-relaxed max-w-2xl mb-12" data-key="hero_desc">
+                    FashionAvenue Academy tomonidan yaratilgan ‘AI in Fashion’ kursi sizga AI yordamida professional fashion foto, video, model va kontent yaratishni o‘rgatadi.
+                </p>
+
+                <!-- Buttons -->
+                <div class="flex flex-col sm:flex-row gap-6 w-full sm:w-auto mb-16 justify-center">
+                    <a href="#curriculum" class="px-10 py-4 bg-[#F7F3FF] text-black font-medium text-xs uppercase tracking-fashion-label hover:bg-accent-purple hover:scale-105 transition-all duration-300 rounded-full text-center" data-key="btn_curriculum">
+                        Dasturga nazar tashlash
+                    </a>
+                    <a href="#about" class="px-10 py-4 border border-fashion-border text-[#F7F3FF] font-medium text-xs uppercase tracking-fashion-label hover:border-accent-purple hover:bg-white/5 transition-all duration-300 rounded-full text-center" data-key="btn_learn_more">
+                        Batafsil
+                    </a>
+                </div>
+
+                <!-- Tools List -->
+                <div class="w-full border-t border-fashion-border/50 pt-8 max-w-md mx-auto">
+                    <p class="text-[10px] uppercase tracking-fashion-wide text-fashion-muted font-medium">
+                        Midjourney &middot; Higgsfield &middot; Google Flow &middot; CapCut
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3) ABOUT SECTION -->
+    <section id="about" class="py-24 lg:py-32 relative">
+        <div class="max-w-[1140px] mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-20 items-center">
+                
+                <!-- Left: Text -->
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-serif text-[#F7F3FF] mb-10 tracking-wide" data-key="about_title">KURS HAQIDA</h2>
+                    <div class="space-y-8 text-fashion-text font-light leading-loose text-lg">
+                        <p data-key="about_text_1" class="border-l-2 border-fashion-border pl-6">
+                            Kurs 9 ta darsdan iborat. Har hafta 2 marta: Dushanba + Payshanba.
+                        </p>
+                        <p data-key="about_text_2">
+                            Har bir dars: 1.5 soat. Midjourney, Higgsfield, Google Flow, AI video prompting, CapCut montaj—hammasi bir kursda.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Right: Course Overview Card -->
+                <div class="glass-card p-10 rounded-fashion relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-accent-blue/10 blur-[50px] rounded-full pointer-events-none"></div>
+                    
+                    <h3 class="text-2xl font-display italic text-[#F7F3FF] mb-8" data-key="course_overview">Kurs Tavsifi</h3>
+                    
+                    <ul class="space-y-6">
+                        <li class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full border border-fashion-border flex items-center justify-center bg-white/5">
+                                <i data-lucide="layers" class="text-accent-purple w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <span class="block text-[10px] uppercase tracking-widest text-fashion-muted">Darslar soni</span>
+                                <span class="text-lg text-white" data-key="lessons_count">9 Dars</span>
+                            </div>
+                        </li>
+                        <li class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full border border-fashion-border flex items-center justify-center bg-white/5">
+                                <i data-lucide="calendar" class="text-accent-purple w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <span class="block text-[10px] uppercase tracking-widest text-fashion-muted">Kunlar</span>
+                                <span class="text-lg text-white">Dushanba & Payshanba</span>
+                            </div>
+                        </li>
+                        <li class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full border border-fashion-border flex items-center justify-center bg-white/5">
+                                <i data-lucide="clock" class="text-accent-purple w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <span class="block text-[10px] uppercase tracking-widest text-fashion-muted">Vaqt</span>
+                                <span class="text-lg text-white" data-key="hours">1.5 soat</span>
+                            </div>
+                        </li>
+                        <li class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full border border-fashion-border flex items-center justify-center bg-white/5">
+                                <i data-lucide="flag" class="text-accent-purple w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <span class="block text-[10px] uppercase tracking-widest text-fashion-muted">Year</span>
+                                <span class="text-lg text-white">2026 Edition</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4) CURRICULUM SECTION -->
+    <section id="curriculum" class="py-32 bg-secondary/30 border-t border-fashion-border/20">
+        <div class="max-w-[1140px] mx-auto px-6">
+            <div class="text-center mb-24">
+                <span class="text-[10px] font-bold tracking-widest uppercase text-accent-blue mb-4 block" data-key="curriculum_subtitle">Professional ta'lim</span>
+                <h2 class="text-3xl md:text-5xl font-serif text-[#F7F3FF] tracking-wide" data-key="curriculum_title">O‘QUV DASTURI</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- Card Template -->
+                <div class="glass-card p-8 rounded-fashion group cursor-pointer hover:bg-white/5">
+                    <div class="flex justify-between items-start mb-6">
+                        <span class="inline-block px-3 py-1 rounded-full border border-fashion-border bg-white/5 text-[9px] uppercase tracking-widest text-fashion-muted group-hover:border-accent-purple/50 transition-colors">Dars 1</span>
+                        <i data-lucide="arrow-up-right" class="w-4 h-4 text-fashion-muted group-hover:text-accent-purple transition-colors opacity-50 group-hover:opacity-100"></i>
+                    </div>
+                    <h3 class="text-lg font-serif text-[#F7F3FF] mb-4 group-hover:text-accent-purple transition-colors" data-key="l1_title">ChatGPT/Gemini AI Asoslari</h3>
+                    <p class="text-sm text-fashion-muted leading-relaxed" data-key="l1_desc">AI nima va qanday ishlaydi. Prompt yozish asoslari.</p>
+                </div>
+
+                <div class="glass-card p-8 rounded-fashion group cursor-pointer hover:bg-white/5">
+                    <div class="flex justify-between items-start mb-6">
+                        <span class="inline-block px-3 py-1 rounded-full border border-fashion-border bg-white/5 text-[9px] uppercase tracking-widest text-fashion-muted group-hover:border-accent-purple/50 transition-colors">Dars 2</span>
+                        <i data-lucide="arrow-up-right" class="w-4 h-4 text-fashion-muted group-hover:text-accent-purple transition-colors opacity-50 group-hover:opacity-100"></i>
+                    </div>
+                    <h3 class="text-lg font-serif text-[#F7F3FF] mb-4 group-hover:text-accent-purple transition-colors" data-key="l2_title">AI Photo Concepts</h3>
+                    <p class="text-sm text-fashion-muted leading-relaxed" data-key="l2_desc">ChatGPT orqali tayyor rasm konseptlari yaratish.</p>
+                </div>
+
+                <div class="glass-card p-8 rounded-fashion group cursor-pointer hover:bg-white/5">
+                    <div class="flex justify-between items-start mb-6">
+                        <span class="inline-block px-3 py-1 rounded-full border border-fashion-border bg-white/5 text-[9px] uppercase tracking-widest text-fashion-muted group-hover:border-accent-purple/50 transition-colors">Dars 3</span>
+                        <i data-lucide="arrow-up-right" class="w-4 h-4 text-fashion-muted group-hover:text-accent-purple transition-colors opacity-50 group-hover:opacity-100"></i>
+                    </div>
+                    <h3 class="text-lg font-serif text-[#F7F3FF] mb-4 group-hover:text-accent-purple transition-colors" data-key="l3_title">Midjourney Asoslari</h3>
+                    <p class="text-sm text-fashion-muted leading-relaxed" data-key="l3_desc">Model yaratish, atmosfera, kamera, iPhone/DSLR sozlamalari.</p>
+                </div>
+
+                <div class="glass-card p-8 rounded-fashion group cursor-pointer hover:bg-white/5">
+                    <div class="flex justify-between items-start mb-6">
+                        <span class="inline-block px-3 py-1 rounded-full border border-fashion-border bg-white/5 text-[9px] uppercase tracking-widest text-fashion-muted group-hover:border-accent-purple/50 transition-colors">Dars 4</span>
+                        <i data-lucide="arrow-up-right" class="w-4 h-4 text-fashion-muted group-hover:text-accent-purple transition-colors opacity-50 group-hover:opacity-100"></i>
+                    </div>
+                    <h3 class="text-lg font-serif text-[#F7F3FF] mb-4 group-hover:text-accent-purple transition-colors" data-key="l4_title">Midjourney → Higgsfield</h3>
+                    <p class="text-sm text-fashion-muted leading-relaxed" data-key="l4_desc">Rakurslar va aksesuarlar qo‘shish, higgsfield bilan realistiklashtirish.</p>
+                </div>
+
+                <div class="glass-card p-8 rounded-fashion group cursor-pointer hover:bg-white/5">
+                    <div class="flex justify-between items-start mb-6">
+                        <span class="inline-block px-3 py-1 rounded-full border border-fashion-border bg-white/5 text-[9px] uppercase tracking-widest text-fashion-muted group-hover:border-accent-purple/50 transition-colors">Dars 5</span>
+                        <i data-lucide="arrow-up-right" class="w-4 h-4 text-fashion-muted group-hover:text-accent-purple transition-colors opacity-50 group-hover:opacity-100"></i>
+                    </div>
+                    <h3 class="text-lg font-serif text-[#F7F3FF] mb-4 group-hover:text-accent-purple transition-colors" data-key="l5_title">Realistik AI Modellar</h3>
+                    <p class="text-sm text-fashion-muted leading-relaxed" data-key="l5_desc">Teri tekstura, yorug‘lik, pozalar, detallar.</p>
+                </div>
+
+                <div class="glass-card p-8 rounded-fashion group cursor-pointer hover:bg-white/5">
+                    <div class="flex justify-between items-start mb-6">
+                        <span class="inline-block px-3 py-1 rounded-full border border-fashion-border bg-white/5 text-[9px] uppercase tracking-widest text-fashion-muted group-hover:border-accent-purple/50 transition-colors">Dars 6</span>
+                        <i data-lucide="arrow-up-right" class="w-4 h-4 text-fashion-muted group-hover:text-accent-purple transition-colors opacity-50 group-hover:opacity-100"></i>
+                    </div>
+                    <h3 class="text-lg font-serif text-[#F7F3FF] mb-4 group-hover:text-accent-purple transition-colors" data-key="l6_title">Higgsfield Full (35$)</h3>
+                    <p class="text-sm text-fashion-muted leading-relaxed" data-key="l6_desc">Barcha AI modellar bilan eksperiment.</p>
+                </div>
+
+                <div class="glass-card p-8 rounded-fashion group cursor-pointer hover:bg-white/5">
+                    <div class="flex justify-between items-start mb-6">
+                        <span class="inline-block px-3 py-1 rounded-full border border-fashion-border bg-white/5 text-[9px] uppercase tracking-widest text-fashion-muted group-hover:border-accent-purple/50 transition-colors">Dars 7</span>
+                        <i data-lucide="arrow-up-right" class="w-4 h-4 text-fashion-muted group-hover:text-accent-purple transition-colors opacity-50 group-hover:opacity-100"></i>
+                    </div>
+                    <h3 class="text-lg font-serif text-[#F7F3FF] mb-4 group-hover:text-accent-purple transition-colors" data-key="l7_title">AI Video Prompts</h3>
+                    <p class="text-sm text-fashion-muted leading-relaxed" data-key="l7_desc">ChatGPT orqali AI video prompt yaratish, syujet, harakat.</p>
+                </div>
+
+                <div class="glass-card p-8 rounded-fashion group cursor-pointer hover:bg-white/5">
+                    <div class="flex justify-between items-start mb-6">
+                        <span class="inline-block px-3 py-1 rounded-full border border-fashion-border bg-white/5 text-[9px] uppercase tracking-widest text-fashion-muted group-hover:border-accent-purple/50 transition-colors">Dars 8</span>
+                        <i data-lucide="arrow-up-right" class="w-4 h-4 text-fashion-muted group-hover:text-accent-purple transition-colors opacity-50 group-hover:opacity-100"></i>
+                    </div>
+                    <h3 class="text-lg font-serif text-[#F7F3FF] mb-4 group-hover:text-accent-purple transition-colors" data-key="l8_title">Google Flow / Video AI</h3>
+                    <p class="text-sm text-fashion-muted leading-relaxed" data-key="l8_desc">Ultra-realistik fashion videolar yaratish.</p>
+                </div>
+
+                <div class="glass-card p-8 rounded-fashion group cursor-pointer hover:bg-white/5">
+                    <div class="flex justify-between items-start mb-6">
+                        <span class="inline-block px-3 py-1 rounded-full border border-fashion-border bg-white/5 text-[9px] uppercase tracking-widest text-fashion-muted group-hover:border-accent-purple/50 transition-colors">Dars 9</span>
+                        <i data-lucide="arrow-up-right" class="w-4 h-4 text-fashion-muted group-hover:text-accent-purple transition-colors opacity-50 group-hover:opacity-100"></i>
+                    </div>
+                    <h3 class="text-lg font-serif text-[#F7F3FF] mb-4 group-hover:text-accent-purple transition-colors" data-key="l9_title">CapCut Video Editing</h3>
+                    <p class="text-sm text-fashion-muted leading-relaxed" data-key="l9_desc">AI natijalarini professional montaj qilish.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 5) PRICING SECTION -->
+    <section id="pricing" class="py-32 relative">
+        <div class="max-w-[1140px] mx-auto px-6 flex justify-center">
             
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 text-center w-full border-t border-fashion-light pt-10">
-                <div class="flex flex-col items-center">
-                    <div class="text-3xl font-bold text-fashion-dark mb-1" data-key="stat_duration_val">4 Hafta</div>
-                    <div class="text-xs text-gray-500 uppercase tracking-widest" data-key="stat_duration_label">Davomiyligi</div>
+            <!-- Main Pricing Card -->
+            <div class="w-full max-w-lg glass-card rounded-fashion p-12 text-center relative overflow-hidden">
+                <!-- Top gradient line -->
+                <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-text opacity-50"></div>
+                
+                <h2 class="text-2xl font-serif text-[#F7F3FF] mb-12 tracking-wide" data-key="pricing_title">NARXLAR & FORMAT</h2>
+                
+                <div class="flex justify-center items-baseline mb-12">
+                    <span class="text-7xl font-display font-medium text-white tracking-tighter">$150</span>
                 </div>
-                <div class="flex flex-col items-center">
-                    <div class="text-3xl font-bold text-fashion-dark mb-1" data-key="stat_hours_val">12 Soat</div>
-                    <div class="text-xs text-gray-500 uppercase tracking-widest" data-key="stat_hours_label">Umumiy vaqt</div>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div class="text-3xl font-bold text-fashion-dark mb-1">2 <span data-key="tools_label">Asbob</span></div>
-                    <div class="text-xs text-gray-500 uppercase tracking-widest">Nano Banana & G-Flow</div>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div class="text-3xl font-bold text-fashion-dark mb-1">65%</div>
-                    <div class="text-xs text-gray-500 uppercase tracking-widest" data-key="stat_practice_label">Amaliyot</div>
-                </div>
+                
+                <ul class="space-y-4 mb-12 text-left max-w-xs mx-auto">
+                    <li class="flex items-center gap-3 text-fashion-text">
+                        <div class="w-1.5 h-1.5 rounded-full bg-accent-purple"></div>
+                        <span data-key="duration_val">4.5 hafta (Davomiyligi)</span>
+                    </li>
+                    <li class="flex items-center gap-3 text-fashion-text">
+                        <div class="w-1.5 h-1.5 rounded-full bg-accent-blue"></div>
+                        <span data-key="frequency_val">2 marta (Du + Pay)</span>
+                    </li>
+                    <li class="flex items-center gap-3 text-fashion-text">
+                        <div class="w-1.5 h-1.5 rounded-full bg-white"></div>
+                        <span data-key="lesson_time">1.5 soat (Dars vaqti)</span>
+                    </li>
+                </ul>
             </div>
-        </header>
+        </div>
+    </section>
 
-        <!-- Overview -->
-        <section id="overview" class="bg-white p-8 rounded-2xl shadow-sm border border-fashion-light">
-            <div class="mb-8">
-                <h2 class="font-serif text-3xl text-fashion-dark mb-3" data-key="balance_title">Kurs Balansi</h2>
-                <p class="text-gray-600" data-key="balance_desc">Nazariya va amaliyot taqsimoti.</p>
+    <!-- 6) MENTOR SECTION -->
+    <section class="py-32 bg-secondary/20">
+        <div class="max-w-[1140px] mx-auto px-6">
+            <!-- Centered Layout since image is removed -->
+            <div class="flex flex-col items-center text-center max-w-3xl mx-auto">
+                <h3 class="text-3xl font-serif text-[#F7F3FF] mb-6" data-key="instructor_title">MENTOR</h3>
+                <div class="w-12 h-[2px] bg-gradient-text mb-8"></div>
+                <p class="text-2xl text-fashion-text font-light leading-relaxed" data-key="instructor_desc">Kurs darslarini Xasanov Rahimjon olib boradi.</p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                <div class="space-y-4">
-                    <h3 class="text-sm font-bold uppercase tracking-widest text-gray-400 text-center" data-key="chart_topics_title">Mavzular Taqsimoti</h3>
-                    <div class="chart-container"><canvas id="contentChart"></canvas></div>
-                </div>
-                <div class="space-y-4">
-                    <h3 class="text-sm font-bold uppercase tracking-widest text-gray-400 text-center" data-key="chart_structure_title">Dars Tuzilishi</h3>
-                    <div class="chart-container"><canvas id="structureChart"></canvas></div>
-                    <p class="text-xs text-center text-gray-400 mt-2" data-key="chart_note">* Har bir dars 90 daqiqa</p>
-                </div>
-            </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Syllabus -->
-        <section id="syllabus" class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            <div class="lg:col-span-4 space-y-4">
-                <div class="mb-4">
-                    <h2 class="font-serif text-3xl text-fashion-dark" data-key="list_title">Darslar Ro'yxati</h2>
-                    <p class="text-sm text-gray-500 mt-1" data-key="list_subtitle">Batafsil ko'rish uchun darsni tanlang.</p>
-                </div>
-                <div id="lessonList" class="space-y-2"></div>
-            </div>
-            <div class="lg:col-span-8">
-                <div id="lessonDetail" class="bg-white rounded-2xl p-8 shadow-lg border border-fashion-light h-full flex flex-col justify-center min-h-[500px] relative overflow-hidden transition-all duration-300">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-fashion-gold opacity-5 rounded-bl-full pointer-events-none"></div>
-                    <div id="detailContent" class="relative z-10"></div>
-                </div>
-            </div>
-        </section>
+    <!-- 7) FAQ SECTION -->
+    <section id="faq" class="py-32">
+        <div class="max-w-[800px] mx-auto px-6">
+            <h2 class="text-3xl font-serif text-[#F7F3FF] mb-16 text-center tracking-wide" data-key="faq_title">FAQ</h2>
+            
+            <div class="space-y-4">
+                <details class="group glass-card rounded-[16px] open:bg-white/5 transition-all">
+                    <summary class="flex justify-between items-center p-6 cursor-pointer list-none details-marker text-lg text-[#F7F3FF] font-light">
+                        <span data-key="faq_q1">Midjourney to‘lovlari kiradimi?</span>
+                        <span class="text-fashion-muted transition-transform duration-300 group-open:rotate-180">
+                            <i data-lucide="chevron-down" class="w-5 h-5"></i>
+                        </span>
+                    </summary>
+                    <div class="px-6 pb-6 text-fashion-muted leading-relaxed font-light border-t border-white/5 mt-2 pt-4">
+                        <p data-key="faq_a1">Yo‘q, alohida 10$ oylik tarif.</p>
+                    </div>
+                </details>
 
-        <!-- Schedule/Plan -->
-        <section id="schedule" class="bg-fashion-dark text-white rounded-2xl p-8 md:p-12 relative overflow-hidden">
-            <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none" style="background-image: radial-gradient(#A68A64 1px, transparent 1px); background-size: 20px 20px;"></div>
-            <div class="relative z-10 text-center mb-10">
-                <h2 class="font-serif text-3xl mb-2" data-key="plan_title">4 Haftalik Reja</h2>
-                <p class="text-gray-400" data-key="plan_subtitle">Haftasiga 2 marta, barqaror o'sish.</p>
+                <details class="group glass-card rounded-[16px] open:bg-white/5 transition-all">
+                    <summary class="flex justify-between items-center p-6 cursor-pointer list-none details-marker text-lg text-[#F7F3FF] font-light">
+                        <span data-key="faq_q2">Higgsfield 35$ qayerdan olinadi?</span>
+                        <span class="text-fashion-muted transition-transform duration-300 group-open:rotate-180">
+                            <i data-lucide="chevron-down" class="w-5 h-5"></i>
+                        </span>
+                    </summary>
+                    <div class="px-6 pb-6 text-fashion-muted leading-relaxed font-light border-t border-white/5 mt-2 pt-4">
+                        <p data-key="faq_a2">Rasmiy sayti orqali.</p>
+                    </div>
+                </details>
+
+                <details class="group glass-card rounded-[16px] open:bg-white/5 transition-all">
+                    <summary class="flex justify-between items-center p-6 cursor-pointer list-none details-marker text-lg text-[#F7F3FF] font-light">
+                        <span data-key="faq_q3">Kuchli komputer kerakmi?</span>
+                        <span class="text-fashion-muted transition-transform duration-300 group-open:rotate-180">
+                            <i data-lucide="chevron-down" class="w-5 h-5"></i>
+                        </span>
+                    </summary>
+                    <div class="px-6 pb-6 text-fashion-muted leading-relaxed font-light border-t border-white/5 mt-2 pt-4">
+                        <p data-key="faq_a3">Yo‘q, AI bulutda ishlaydi.</p>
+                    </div>
+                </details>
             </div>
-            <div id="weeklyPlanContainer" class="grid grid-cols-1 md:grid-cols-4 gap-6 relative z-10">
-                <!-- Javascript populates this -->
+        </div>
+    </section>
+
+    <!-- 8) FOOTER -->
+    <footer class="border-t border-fashion-border/20 py-16 bg-main">
+        <div class="max-w-[1140px] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="text-center md:text-left">
+                <span class="text-xl font-serif text-[#F7F3FF]">AiFashion</span>
+                <span class="text-sm text-fashion-muted ml-2">by FashionAvenue &middot; 2026</span>
             </div>
-        </section>
+            
+            <div class="flex gap-8 text-[11px] uppercase tracking-fashion-label text-fashion-muted">
+                <a href="https://www.instagram.com/fashionavenue.uz/" target="_blank" class="hover:text-accent-purple transition">Instagram</a>
+                <a href="https://t.me/fashionavenuebySabinaa" target="_blank" class="hover:text-accent-purple transition">Telegram</a>
+                <a href="tel:+998778009779" class="hover:text-accent-purple transition">+998-77-800-97-79</a>
+            </div>
+        </div>
+    </footer>
 
-        <!-- Footer -->
-        <footer class="bg-white border-t border-fashion-light py-8 text-center text-sm text-gray-500">
-            <p>&copy; 2026 Fashionavenue. Barcha huquqlar himoyalangan.</p>
-        </footer>
-
-    </main>
-
+    <!-- Translation Data & Logic -->
     <script>
-        // --- TRANSLATIONS (Uzbek & Russian) ---
         const translations = {
             uz: {
-                // Nav
-                nav_overview: "Umumiy Ko'rinish", nav_syllabus: "Kurs Dasturi", nav_schedule: "Reja",
-                
-                // Hero
-                hero_badge: "8 Darslik Intensiv", hero_title_1: "Moda va AI:", hero_title_2: "G'oyadan Reallikka",
-                hero_desc: "Noldan boshlab professionalgacha. <strong>Nano Banana</strong> yordamida moda rasmlari va <strong>Google Flow</strong> orqali yuqori sifatli video kampaniyalar yaratishni o'rganing.",
-                stat_duration_val: "4 Hafta", stat_duration_label: "Davomiyligi",
-                stat_hours_val: "12 Soat", stat_hours_label: "Umumiy vaqt",
-                tools_label: "Asbob", stat_practice_label: "Amaliyot",
-                
-                // Balance
-                balance_title: "Kurs Balansi", 
-                balance_desc: "Nazariya va amaliyot taqsimoti.",
-                
-                chart_topics_title: "Mavzular Taqsimoti", chart_structure_title: "Dars Tuzilishi (Daqiqalarda)", chart_note: "* Har bir dars 90 daqiqa",
-                
-                // Syllabus
-                list_title: "Darslar Ro'yxati", list_subtitle: "Batafsil ko'rish uchun tanlang.",
-                
-                // Plan
-                plan_title: "4 Haftalik Reja", plan_subtitle: "Haftasiga 2 marta, barqaror o'sish.",
-                
-                lesson_label: "Dars",
-                topics_label: "Mavzular",
-                goal_label: "Maqsad",
-                week_label: "Hafta",
-                
-                chart_labels_content: ['Nano Banana (Rasmlar)', 'Google Flow (Video)', 'Strategiya'],
-                chart_labels_structure: ['Nazariya', 'Amaliyot', 'Tahlil']
+                nav_home: "Bosh sahifa",
+                nav_about: "Kurs haqida",
+                nav_curriculum: "Dastur",
+                nav_pricing: "Narxlar",
+                nav_faq: "FAQ",
+                hero_badge: "2026-yilgi Ai in fashion kursi haqida ma'lumot",
+                hero_desc: "FashionAvenue Academy tomonidan yaratilgan “AI in Fashion” kursi sizga AI yordamida professional fashion foto, video, model va kontent yaratishni o‘rgatadi.",
+                btn_curriculum: "Dasturga nazar tashlash",
+                btn_learn_more: "Batafsil",
+                about_title: "KURS HAQIDA",
+                about_text_1: "Kurs 9 ta darsdan iborat. Har hafta 2 marta: Dushanba + Payshanba.",
+                about_text_2: "Har bir dars: 1.5 soat. Midjourney, Higgsfield, Google Flow, AI video prompting, CapCut montaj—hammasi bir kursda.",
+                course_overview: "Kurs Tavsifi",
+                lessons_count: "9 Dars",
+                hours: "1.5 soat",
+                curriculum_title: "O‘QUV DASTURI",
+                curriculum_subtitle: "Professional ta'lim",
+                l1_title: "ChatGPT/Gemini AI Asoslari",
+                l1_desc: "AI nima va qanday ishlaydi. Prompt yozish asoslari.",
+                l2_title: "AI Photo Concepts",
+                l2_desc: "ChatGPT orqali tayyor rasm konseptlari yaratish.",
+                l3_title: "Midjourney Asoslari",
+                l3_desc: "Model yaratish, atmosfera, kamera, iPhone/DSLR sozlamalari.",
+                l4_title: "Midjourney → Higgsfield",
+                l4_desc: "Rakurslar va aksesuarlar qo‘shish, higgsfield bilan realistiklashtirish.",
+                l5_title: "Realistik AI Modellar",
+                l5_desc: "Teri tekstura, yorug‘lik, pozalar, detallar.",
+                l6_title: "Higgsfield Full (35$)",
+                l6_desc: "Barcha AI modellar bilan eksperiment.",
+                l7_title: "AI Video Prompts",
+                l7_desc: "ChatGPT orqali AI video prompt yaratish, syujet, harakat.",
+                l8_title: "Google Flow / Video AI",
+                l8_desc: "Ultra-realistik fashion videolar yaratish.",
+                l9_title: "CapCut Video Editing",
+                l9_desc: "AI natijalarini professional montaj qilish.",
+                pricing_title: "NARXLAR & FORMAT",
+                duration_val: "4.5 hafta (Davomiyligi)",
+                frequency_val: "2 marta (Du + Pay)",
+                lesson_time: "1.5 soat (Dars vaqti)",
+                instructor_title: "MENTOR",
+                instructor_desc: "Kurs darslarini Xasanov Rahimjon olib boradi.",
+                faq_title: "FAQ",
+                faq_q1: "Midjourney to‘lovlari kiradimi?",
+                faq_a1: "Yo‘q, alohida 10$ oylik tarif.",
+                faq_q2: "Higgsfield 35$ qayerdan olinadi?",
+                faq_a2: "Rasmiy sayti orqali.",
+                faq_q3: "Kuchli komputer kerakmi?",
+                faq_a3: "Yo‘q, AI bulutda ishlaydi."
             },
             ru: {
-                // Nav
-                nav_overview: "Обзор", nav_syllabus: "Программа", nav_schedule: "План",
-                
-                // Hero
-                hero_badge: "Интенсив 8 уроков", hero_title_1: "Мода и ИИ:", hero_title_2: "От Идеи к Реальности",
-                hero_desc: "С нуля до профи. Создавайте модные образы с <strong>Nano Banana</strong> и видеокампании с <strong>Google Flow</strong>.",
-                stat_duration_val: "4 Недели", stat_duration_label: "Длительность",
-                stat_hours_val: "12 Часов", stat_hours_label: "Общее время",
-                tools_label: "Инструмента", stat_practice_label: "Практика",
-                
-                // Balance
-                balance_title: "Баланс Курса", 
-                balance_desc: "Распределение теории и практики.",
-
-                chart_topics_title: "Распределение Тем", chart_structure_title: "Структура Урока (Минуты)", chart_note: "* Каждый урок 90 минут",
-                
-                // Syllabus
-                list_title: "Список Уроков", list_subtitle: "Выберите урок для деталей.",
-                
-                // Plan
-                plan_title: "План на 4 Недели", plan_subtitle: "2 раза в неделю, стабильный рост.",
-
-                lesson_label: "Урок",
-                topics_label: "Темы",
-                goal_label: "Цель",
-                week_label: "Неделя",
-
-                chart_labels_content: ['Nano Banana (Фото)', 'Google Flow (Видео)', 'Стратегия'],
-                chart_labels_structure: ['Теория', 'Практика', 'Разбор']
+                nav_home: "Главная",
+                nav_about: "О курсе",
+                nav_curriculum: "Программа",
+                nav_pricing: "Цены",
+                nav_faq: "FAQ",
+                hero_badge: "Информация о курсе Ai in Fashion 2026 года",
+                hero_desc: "Курс “AI in Fashion” от FashionAvenue Academy обучает созданию профессионального fashion-контента с помощью ИИ: фото, видео и моделей.",
+                btn_curriculum: "Смотреть программу",
+                btn_learn_more: "Подробнее",
+                about_title: "О КУРСЕ",
+                about_text_1: "Курс состоит из 9 уроков. Проводится 2 раза в неделю: Понедельник + Четверг.",
+                about_text_2: "Каждый урок: 1.5 часа. Midjourney, Higgsfield, Google Flow, видео-промты, CapCut — всё в одном курсе.",
+                course_overview: "Обзор Курса",
+                lessons_count: "9 Уроков",
+                hours: "1.5 часа",
+                curriculum_title: "ПРОГРАММА ОБУЧЕНИЯ",
+                curriculum_subtitle: "Профессиональное обучение",
+                l1_title: "ChatGPT/Gemini AI Основы",
+                l1_desc: "Что такое ИИ и как он работает. Основы написания промтов.",
+                l2_title: "AI Photo Concepts",
+                l2_desc: "Создание готовых фото-концепций через ChatGPT.",
+                l3_title: "Основы Midjourney",
+                l3_desc: "Создание моделей, атмосфера, камера, настройки iPhone/DSLR.",
+                l4_title: "Midjourney → Higgsfield",
+                l4_desc: "Добавление ракурсов и аксессуаров, реализм через Higgsfield.",
+                l5_title: "Реалистичные AI модели",
+                l5_desc: "Текстура кожи, освещение, позирование, детали.",
+                l6_title: "Higgsfield Full (35$)",
+                l6_desc: "Эксперименты со всеми моделями Higgsfield full.",
+                l7_title: "AI Video Prompts",
+                l7_desc: "Видео-промты, сюжет и движение через ChatGPT.",
+                l8_title: "Google Flow / Video AI",
+                l8_desc: "Создание ультра-реалистичных fashion-видео.",
+                l9_title: "Монтаж в CapCut",
+                l9_desc: "Профессиональный монтаж результата AI в CapCut.",
+                pricing_title: "ЦЕНЫ И ФОРМАТ",
+                duration_val: "4.5 недели (Длительность)",
+                frequency_val: "2 раза в неделю (Пн + Чт)",
+                lesson_time: "1.5 часа (За урок)",
+                instructor_title: "МЕНТОР",
+                instructor_desc: "Уроки проводит Хасанов Рахимжон.",
+                faq_title: "FAQ",
+                faq_q1: "Оплата за Midjourney отдельная?",
+                faq_a1: "Нет, оплачивается отдельно — 10$ в месяц.",
+                faq_q2: "Где взять Higgsfield за 35$?",
+                faq_a2: "Через официальный сайт.",
+                faq_q3: "Нужен ли мощный компьютер?",
+                faq_a3: "Нет, ИИ работает в облаке."
             }
         };
 
-        // --- DATA (Uzbek & Russian) ---
-        const lessonsData = [
-            {
-                id: 1,
-                title: { uz: "Kirish va Nano Banana Asoslari", ru: "Введение и основы Nano Banana" },
-                week: 1,
-                tools: "Nano Banana",
-                goal: { uz: "Platformani tushunish va ilk natijani olish", ru: "Понять платформу и получить первый результат" },
-                topics: { 
-                    uz: ["AI Fashion tushunchasi", "Nano Banana sozlamalari", "Text-to-Image asoslari"], 
-                    ru: ["Понятие AI Fashion", "Настройки Nano Banana", "Основы Text-to-Image"] 
-                },
-                plan: [
-                    { time: "20m", type_uz: "Nazariya", type_ru: "Теория", desc_uz: "AIni modada ishlatish.", desc_ru: "Использование ИИ в моде." },
-                    { time: "50m", type_uz: "Amaliyot", type_ru: "Практика", desc_uz: "Birinchi 'Basic Look' yaratish.", desc_ru: "Создание первого 'Basic Look'." },
-                    { time: "20m", type_uz: "Tahlil", type_ru: "Разбор", desc_uz: "Xatolarni ko'rib chiqish.", desc_ru: "Разбор ошибок." }
-                ]
-            },
-            {
-                id: 2,
-                title: { uz: "Moda Prompt Engineering", ru: "Промпт-инжиниринг в моде" },
-                week: 1,
-                tools: "Nano Banana",
-                goal: { uz: "Matolar va stillarni to'g'ri tasvirlash", ru: "Правильное описание тканей и стилей" },
-                topics: { 
-                    uz: ["Moda terminologiyasi", "Ranglar va yorug'lik", "Salbiy promptlar"], 
-                    ru: ["Терминология моды", "Цвета и освещение", "Негативные промпты"] 
-                },
-                plan: [
-                    { time: "30m", type_uz: "Nazariya", type_ru: "Теория", desc_uz: "Prompt formulalari.", desc_ru: "Формулы промптов." },
-                    { time: "45m", type_uz: "Amaliyot", type_ru: "Практика", desc_uz: "3 xil stilda kolleksiya.", desc_ru: "Коллекция в 3 стилях." },
-                    { time: "15m", type_uz: "Tahlil", type_ru: "Разбор", desc_uz: "Optimallashtirish.", desc_ru: "Оптимизация." }
-                ]
-            },
-            {
-                id: 3,
-                title: { uz: "Murakkab Rasmlar va Modellar", ru: "Сложные образы и модели" },
-                week: 2,
-                tools: "Nano Banana",
-                goal: { uz: "Realistik modellar va pozalarni boshqarish", ru: "Управление реалистичными моделями и позами" },
-                topics: { uz: ["Pozalarni boshqarish", "Yuz ifodalari", "Rakurslar"], ru: ["Контроль поз", "Мимика лица", "Ракурсы"] },
-                plan: [
-                    { time: "25m", type_uz: "Nazariya", type_ru: "Теория", desc_uz: "Kompozitsiya qoidalari.", desc_ru: "Правила композиции." },
-                    { time: "50m", type_uz: "Amaliyot", type_ru: "Практика", desc_uz: "Aniq model generatsiyasi.", desc_ru: "Генерация конкретной модели." },
-                    { time: "15m", type_uz: "Tahlil", type_ru: "Разбор", desc_uz: "Realizm tekshiruvi.", desc_ru: "Проверка реализма." }
-                ]
-            },
-            {
-                id: 4,
-                title: { uz: "Tahrirlash va Upscaling", ru: "Редактирование и Апскейлинг" },
-                week: 2,
-                tools: "Nano Banana + Tools",
-                goal: { uz: "Rasmlarni chop etish sifatiga olib chiqish", ru: "Доведение изображений до качества печати" },
-                topics: { uz: ["Upscaling", "Inpainting (o'chirish)", "Outpainting (kengaytirish)"], ru: ["Апскейлинг", "Inpainting (удаление)", "Outpainting (расширение)"] },
-                plan: [
-                    { time: "20m", type_uz: "Nazariya", type_ru: "Теория", desc_uz: "DPI va sifat.", desc_ru: "DPI и качество." },
-                    { time: "60m", type_uz: "Amaliyot", type_ru: "Практика", desc_uz: "4K sifatga o'tkazish.", desc_ru: "Перевод в 4K." },
-                    { time: "10m", type_uz: "Tahlil", type_ru: "Разбор", desc_uz: "Solishtirish.", desc_ru: "Сравнение." }
-                ]
-            },
-            {
-                id: 5,
-                title: { uz: "Video Yaratishga Kirish", ru: "Введение в создание видео" },
-                week: 3,
-                tools: "Google Flow",
-                goal: { uz: "Statik rasmlardan harakatga o'tish", ru: "Переход от статики к движению" },
-                topics: { uz: ["AI Video texnologiyalari", "FPS va Motion", "Kamera harakatlari"], ru: ["Технологии AI видео", "FPS и Движение", "Движения камеры"] },
-                plan: [
-                    { time: "30m", type_uz: "Nazariya", type_ru: "Теория", desc_uz: "Google Flow interfeysi.", desc_ru: "Интерфейс Google Flow." },
-                    { time: "45m", type_uz: "Amaliyot", type_ru: "Практика", desc_uz: "4 soniyalik video.", desc_ru: "4-секундное видео." },
-                    { time: "15m", type_uz: "Tahlil", type_ru: "Разбор", desc_uz: "Sifatni baholash.", desc_ru: "Оценка качества." }
-                ]
-            },
-            {
-                id: 6,
-                title: { uz: "Rasmdan Videoga", ru: "Из изображения в видео" },
-                week: 3,
-                tools: "Google Flow",
-                goal: { uz: "Kiyim va mato harakatini reallashtirish", ru: "Реализация движения ткани" },
-                topics: { uz: ["Image-to-Video", "Shamol simulyatsiyasi", "Podium yurishi"], ru: ["Image-to-Video", "Симуляция ветра", "Подиумная походка"] },
-                plan: [
-                    { time: "20m", type_uz: "Nazariya", type_ru: "Теория", desc_uz: "Fizika qonunlari.", desc_ru: "Законы физики." },
-                    { time: "60m", type_uz: "Amaliyot", type_ru: "Практика", desc_uz: "Catwalk video.", desc_ru: "Видео дефиле." },
-                    { time: "10m", type_uz: "Tahlil", type_ru: "Разбор", desc_uz: "Artefaktlar.", desc_ru: "Артефакты." }
-                ]
-            },
-            {
-                id: 7,
-                title: { uz: "To'liq Moda Kampaniyasi", ru: "Полная модная кампания" },
-                week: 4,
-                tools: "All Tools",
-                goal: { uz: "Yagona stilga ega hikoya", ru: "Единая стилистика истории" },
-                topics: { uz: ["Storyboarding", "Musiqa va montaj", "Brending"], ru: ["Раскадровка", "Музыка и монтаж", "Брендинг"] },
-                plan: [
-                    { time: "25m", type_uz: "Nazariya", type_ru: "Теория", desc_uz: "Reklama tahlili.", desc_ru: "Анализ рекламы." },
-                    { time: "55m", type_uz: "Amaliyot", type_ru: "Практика", desc_uz: "Mini-reklama roligi.", desc_ru: "Мини-рекламный ролик." },
-                    { time: "10m", type_uz: "Tahlil", type_ru: "Разбор", desc_uz: "Struktura.", desc_ru: "Структура." }
-                ]
-            },
-            {
-                id: 8,
-                title: { uz: "Portfolio va Taqdimot", ru: "Портфолио и Презентация" },
-                week: 4,
-                tools: "All Tools",
-                goal: { uz: "Kursni tayyor mahsulot bilan tugatish", ru: "Завершение курса готовым продуктом" },
-                topics: { uz: ["Portfolio shakllantirish", "Freelance", "Yakuniy taqdimot"], ru: ["Создание портфолио", "Фриланс", "Финальная презентация"] },
-                plan: [
-                    { time: "15m", type_uz: "Nazariya", type_ru: "Теория", desc_uz: "Bozor tahlili.", desc_ru: "Анализ рынка." },
-                    { time: "60m", type_uz: "Amaliyot", type_ru: "Практика", desc_uz: "Showreel yig'ish.", desc_ru: "Сборка шоурила." },
-                    { time: "15m", type_uz: "Yakun", type_ru: "Финал", desc_uz: "Sertifikatlash.", desc_ru: "Сертификация." }
-                ]
+        function setLanguage(lang) {
+            // Update active button state
+            const btnUz = document.getElementById('btn-uz');
+            const btnRu = document.getElementById('btn-ru');
+            
+            if (lang === 'uz') {
+                btnUz.classList.add('bg-white', 'text-black');
+                btnUz.classList.remove('text-fashion-muted', 'hover:text-white');
+                btnRu.classList.remove('bg-white', 'text-black');
+                btnRu.classList.add('text-fashion-muted', 'hover:text-white');
+            } else {
+                btnRu.classList.add('bg-white', 'text-black');
+                btnRu.classList.remove('text-fashion-muted', 'hover:text-white');
+                btnUz.classList.remove('bg-white', 'text-black');
+                btnUz.classList.add('text-fashion-muted', 'hover:text-white');
             }
-        ];
 
-        const weekPlan = [
-            { week: 1, title: {uz: "Rasmlar Asosi", ru: "Основы Фото"}, desc: {uz: "Nano Banana asoslari", ru: "Основы Nano Banana"}, lessons: [1, 2] },
-            { week: 2, title: {uz: "Pro Dizayn", ru: "Pro Дизайн"}, desc: {uz: "Murakkablik va Sifat", ru: "Сложность и Качество"}, lessons: [3, 4] },
-            { week: 3, title: {uz: "Video & Harakat", ru: "Видео и Движение"}, desc: {uz: "Google Flow jonlantirish", ru: "Анимация в Google Flow"}, lessons: [5, 6] },
-            { week: 4, title: {uz: "Katta Loyiha", ru: "Большой Проект"}, desc: {uz: "Kampaniya yaratish", ru: "Создание кампании"}, lessons: [7, 8] }
-        ];
-
-        // --- STATE ---
-        let currentLang = 'uz';
-        let currentLessonId = 1;
-        let contentChart, structureChart;
-
-        // --- INIT ---
-        document.addEventListener('DOMContentLoaded', () => {
-            initCharts(); 
-            updateLanguageUI();
-            renderWeeklyPlan();
-        });
-
-        // --- CORE FUNCTIONS ---
-
-        function toggleLanguage() {
-            currentLang = currentLang === 'uz' ? 'ru' : 'uz';
-            document.getElementById('langBtn').innerText = currentLang === 'uz' ? 'RU' : 'UZ';
-            document.getElementById('langBtnMobile').innerText = currentLang === 'uz' ? 'RU' : 'UZ';
-            updateLanguageUI();
-        }
-
-        function updateLanguageUI() {
-            // Static text
-            document.querySelectorAll('[data-key]').forEach(el => {
-                const key = el.getAttribute('data-key');
-                if(translations[currentLang][key]) {
-                    el.innerHTML = translations[currentLang][key];
+            // Update text content
+            document.querySelectorAll('[data-key]').forEach(element => {
+                const key = element.getAttribute('data-key');
+                if (translations[lang][key]) {
+                    element.textContent = translations[lang][key];
                 }
             });
-
-            // Re-render dynamic components
-            renderLessonList();
-            renderLessonDetail(currentLessonId);
-            renderWeeklyPlan();
-            updateCharts();
-        }
-
-        function renderLessonList() {
-            const listEl = document.getElementById('lessonList');
-            const t = translations[currentLang];
-            listEl.innerHTML = lessonsData.map(lesson => `
-                <div onclick="selectLesson(${lesson.id})" 
-                     class="cursor-pointer p-4 rounded-lg border border-transparent hover:bg-white hover:shadow-md transition-all duration-200 ${lesson.id === currentLessonId ? 'lesson-active shadow-sm' : 'text-gray-500'}">
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs font-bold uppercase tracking-wider ${lesson.id === currentLessonId ? 'text-fashion-gold' : 'text-gray-400'}">${t.lesson_label} ${lesson.id}</span>
-                        <span class="text-xs bg-gray-100 px-2 py-1 rounded text-gray-500">${t.week_label} ${lesson.week}</span>
-                    </div>
-                    <h3 class="font-medium text-lg mt-1 ${lesson.id === currentLessonId ? 'text-fashion-dark' : ''}">${lesson.title[currentLang]}</h3>
-                </div>
-            `).join('');
-        }
-
-        function selectLesson(id) {
-            currentLessonId = id;
-            renderLessonList();
-            const detailEl = document.getElementById('lessonDetail');
-            detailEl.classList.add('opacity-50', 'scale-95');
-            setTimeout(() => {
-                renderLessonDetail(id);
-                detailEl.classList.remove('opacity-50', 'scale-95');
-            }, 200);
-        }
-
-        function renderLessonDetail(id) {
-            const lesson = lessonsData.find(l => l.id === id);
-            const t = translations[currentLang];
             
-            // Plan items
-            const planHtml = lesson.plan.map(item => {
-                const typeText = item[`type_${currentLang}`];
-                const descText = item[`desc_${currentLang}`];
-                let colorClass = 'bg-gray-500';
-                if(item.type_uz === 'Nazariya') colorClass = 'bg-fashion-dark';
-                if(item.type_uz === 'Amaliyot') colorClass = 'bg-fashion-gold';
-                
-                return `
-                <li class="flex items-start group">
-                    <span class="${colorClass} text-white text-xs font-bold px-2 py-1 rounded mr-3 mt-1 min-w-[50px] text-center">${item.time}</span>
-                    <div>
-                        <span class="font-bold text-gray-800 text-sm block mb-1">${typeText}</span>
-                        <span class="text-gray-600 text-sm leading-relaxed">${descText}</span>
-                    </div>
-                </li>`;
-            }).join('');
-
-            const topicsHtml = lesson.topics[currentLang].map(tp => `<li class="text-gray-600 text-sm">${tp}</li>`).join('');
-
-            document.getElementById('detailContent').innerHTML = `
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-fashion-gold font-bold tracking-widest uppercase text-sm">${t.lesson_label} ${lesson.id}</span>
-                    <span class="text-xs text-gray-400 border border-gray-200 px-2 py-1 rounded">${lesson.tools}</span>
-                </div>
-                <h3 class="font-serif text-3xl md:text-4xl text-fashion-dark mb-6 leading-tight">${lesson.title[currentLang]}</h3>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    <div class="bg-[#F9F8F6] p-5 rounded-xl border border-fashion-light">
-                        <h4 class="font-bold text-fashion-dark mb-3 text-xs uppercase tracking-wide flex items-center">
-                            <span class="w-2 h-2 bg-fashion-gold rounded-full mr-2"></span>${t.topics_label}
-                        </h4>
-                        <ul class="list-disc list-inside space-y-2 marker:text-fashion-gold">${topicsHtml}</ul>
-                    </div>
-                    <div class="bg-[#F9F8F6] p-5 rounded-xl border border-fashion-light flex flex-col justify-center">
-                        <h4 class="font-bold text-fashion-dark mb-2 text-xs uppercase tracking-wide flex items-center">
-                            <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>${t.goal_label}
-                        </h4>
-                        <p class="text-gray-600 text-sm italic">"${lesson.goal[currentLang]}"</p>
-                    </div>
-                </div>
-                <div class="space-y-4">
-                    <ul class="space-y-4">${planHtml}</ul>
-                </div>
-            `;
+            // Set language attribute for accessibility
+            document.documentElement.lang = lang;
         }
 
-        function renderWeeklyPlan() {
-            const container = document.getElementById('weeklyPlanContainer');
-            const t = translations[currentLang];
-            container.innerHTML = weekPlan.map(w => `
-                <div class="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/10 hover:bg-white/20 transition duration-300">
-                    <div class="text-fashion-gold font-bold text-lg mb-2">${t.week_label} ${w.week}</div>
-                    <div class="text-2xl font-serif mb-4">${w.title[currentLang]}</div>
-                    <p class="text-sm text-gray-300 mb-4">${w.desc[currentLang]}</p>
-                    <div class="space-y-2 text-xs font-mono">
-                        ${w.lessons.map(lId => `<div class="bg-black/30 p-2 rounded">${t.lesson_label} ${lId}</div>`).join('')}
-                    </div>
-                </div>
-            `).join('');
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
         }
 
-        // --- CHARTS ---
-        function initCharts() {
-            const ctx1 = document.getElementById('contentChart').getContext('2d');
-            const ctx2 = document.getElementById('structureChart').getContext('2d');
-            
-            Chart.defaults.font.family = 'Inter';
+        // Initialize Lucide Icons
+        lucide.createIcons();
 
-            contentChart = new Chart(ctx1, {
-                type: 'doughnut',
-                data: {
-                    labels: [], // Set in updateCharts
-                    datasets: [{
-                        data: [45, 40, 15],
-                        backgroundColor: ['#A68A64', '#1C1917', '#E5E7EB'],
-                        borderWidth: 0
-                    }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { position: 'bottom' } } }
-            });
-
-            structureChart = new Chart(ctx2, {
-                type: 'bar',
-                data: {
-                    labels: ['1', '2', '3', '4', '5', '6', '7', '8'],
-                    datasets: [
-                        { label: '', data: [20, 30, 25, 20, 30, 20, 25, 15], backgroundColor: '#1C1917' }, // Theory
-                        { label: '', data: [50, 45, 50, 60, 45, 60, 55, 60], backgroundColor: '#A68A64' }, // Practice
-                        { label: '', data: [20, 15, 15, 10, 15, 10, 10, 15], backgroundColor: '#E5E7EB' }  // Review
-                    ]
-                },
-                options: { 
-                    responsive: true, maintainAspectRatio: false, 
-                    scales: { x: { stacked: true, grid: {display:false} }, y: { stacked: true, display: false } },
-                    plugins: { legend: { position: 'bottom' } }
-                }
-            });
-        }
-
-        function updateCharts() {
-            if (!contentChart || !structureChart) return;
-
-            const t = translations[currentLang];
-            
-            // Update Content Chart
-            contentChart.data.labels = t.chart_labels_content;
-            contentChart.update();
-
-            // Update Structure Chart
-            structureChart.data.datasets[0].label = t.chart_labels_structure[0];
-            structureChart.data.datasets[1].label = t.chart_labels_structure[1];
-            structureChart.data.datasets[2].label = t.chart_labels_structure[2];
-            structureChart.update();
-        }
+        // Init language
+        setLanguage('uz');
     </script>
 </body>
 </html>
-
